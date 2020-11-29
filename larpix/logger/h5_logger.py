@@ -36,6 +36,7 @@ class HDF5Logger(Logger):
         default: '')
     :param version: the format version of LArPix+HDF5 to use (optional,
         default: ``larpix.format.hdf5format.latest_version``)
+    :param compression_enabled: enable in-flight hdf5 block compression
 
     '''
     data_desc_map = {

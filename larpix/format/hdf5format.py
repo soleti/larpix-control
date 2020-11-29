@@ -865,6 +865,7 @@ def to_file(filename, packet_list=None, chip_list=None, mode='a', version=None,
         version will be used. If writing an existing file and version
         is specified and does not exactly match the existing file's
         version, a ``RuntimeError`` will be raised. (default: ``None``)
+    :param compression_enabled: enable in-flight HDF5 block compression, if updating a file, will use existing file compression options
 
     '''
     if packet_list is None: packet_list = []
