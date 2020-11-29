@@ -845,7 +845,8 @@ _parse_method_lookup = {
     }
 }
 
-def to_file(filename, packet_list=None, chip_list=None, mode='a', version=None):
+def to_file(filename, packet_list=None, chip_list=None, mode='a', version=None,
+  compression_enabled=True):
     '''
     Save the given packets to the given file.
 
@@ -911,7 +912,8 @@ def to_file(filename, packet_list=None, chip_list=None, mode='a', version=None):
         packet_dtype = dtypes[version][packet_dset_name]
         if packet_dset_name not in f.keys():
             packet_dset = f.create_dataset(packet_dset_name, shape=(len(packet_list),),
-                    maxshape=(None,), dtype=packet_dtype)
+                    maxshape=(None,), dtype=packet_dtype,
+                    compression=None if not compression_enabled else 'gzip')
             if version[0] == '1' or version[0] == '2':
                 if version[-1] == '2' and version[0] == '2':
                     packet_dset.attrs['packet_types'] = '''
@@ -945,7 +947,8 @@ def to_file(filename, packet_list=None, chip_list=None, mode='a', version=None):
             if message_dset_name not in f.keys():
                 message_dset = f.create_dataset(message_dset_name,
                         shape=(0,), maxshape=(None,),
-                        dtype=message_dtype)
+                        dtype=message_dtype,
+                        compression=None if not compression_enabled else 'gzip')
                 message_start_index = 0
             else:
                 message_dset = f[message_dset_name]
@@ -957,7 +960,8 @@ def to_file(filename, packet_list=None, chip_list=None, mode='a', version=None):
             if configs_dset_name not in f.keys():
                 configs_dset = f.create_dataset(configs_dset_name,
                     shape=(0,), maxshape=(None,),
-                    dtype=configs_dtype)
+                    dtype=configs_dtype,
+                    compression=None if not compression_enabled else 'gzip')
                 configs_start_index = 0
             else:
                 configs_dset = f[configs_dset_name]

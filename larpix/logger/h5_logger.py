@@ -47,13 +47,15 @@ class HDF5Logger(Logger):
     }
 
     def __init__(self, filename=None, buffer_length=10000,
-            directory='', version=latest_version, enabled=False):
+            directory='', version=latest_version, enabled=False,
+            compression_enabled=True):
         super(HDF5Logger, self).__init__(enabled=enabled)
         self.version = version
         self.filename = filename
         self.directory = directory
         self.datafile = None
         self.buffer_length = buffer_length
+        self.compression_enabled = compression_enabled
 
         self._buffer = {'packets': []}
         self._worker_queue = Queue()
@@ -144,7 +146,7 @@ class HDF5Logger(Logger):
         try:
             while True:
                 packets = self._worker_queue.get(timeout=1)
-                to_file(self.filename, packets, version=self.version)
+                to_file(self.filename, packets, version=self.version, compression_enabled=self.compression_enabled)
                 self._worker_queue.task_done()
         except Empty:
             pass
